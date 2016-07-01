@@ -1,4 +1,4 @@
-int spkPin = 11;
+int spkPin = 9;
 
 int notes[] = {
 31    ,4032,
@@ -183,6 +183,12 @@ int notes[] = {
 #define NOTE_D8  87
 #define NOTE_DS8 88
 
+int melody2[] = {
+  NOTE_E7, NOTE_C7, NOTE_G7, NOTE_G6, NOTE_E6, NOTE_A6, NOTE_B6,
+  NOTE_AS6, NOTE_A7, NOTE_F7, NOTE_D7, NOTE_B6, 0,
+  NOTE_E7, NOTE_C7, NOTE_G7, NOTE_G6, NOTE_E6, NOTE_A6, NOTE_B6,
+  NOTE_AS6, NOTE_A7, NOTE_F7, NOTE_D7, NOTE_B6, 0
+};
 
 int melody[] = {
   NOTE_E7, NOTE_E7, 0, NOTE_E7,
@@ -212,6 +218,11 @@ int melody[] = {
 };
 
 #define max_notes (sizeof(melody) / sizeof(melody[0]))
+
+int tempo2[] = {
+  12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+   9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9  
+};
 
 int tempo[] = {
   12, 12, 12, 12,
@@ -256,13 +267,27 @@ int music_playing = true;
  * La idea: Se llama esto cuando cae el counter. El counter es 1/2 de la frecuencia. Mitad On / Mitad Off / 1/3 Off espacio (Tiempo aca)
  * Se repite times veces segun el tempo.
  */
+
+long mm = -1;
 ISR(TIMER1_COMPA_vect) {          // timer compare interrupt service routine
 
   if (!music_playing) return;
 
   if (new_note) {
-    //Serial.println("New Note");
+    long d = 0;
+    if (mm == -1) mm = millis();
+    else {
+      d = millis() - mm;
+      mm = millis();
+    }
     note_index++;
+    /*
+    Serial.print(note_index);
+    Serial.print(" - ");
+    Serial.print(melody[note_index]);
+    Serial.print(" - ");
+    Serial.println(d);
+    */
     if (note_index >= max_notes) note_index = 0;
     new_note = false;
     time_cut = notes[melody[note_index] * 2] / tempo[note_index];
@@ -354,17 +379,41 @@ void music_setup(int sp) {
   digitalWrite(spkPin, LOW);
 }
 
+int sens = 10;
+
 
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(115200);
+
   pinMode(13, OUTPUT);
 
-  timer_setup();
+  photo_setup();
+  photo_adjust();
 
-  Serial.begin(9600);
+  music_setup(9);
+
+  sens = int((long)photo_get_prom_on(0) * 95l / 100l);
+
+  Serial.print("On: ");
+  Serial.println(photo_get_prom_on(0));
+
+  Serial.print("Off: ");
+  Serial.println(photo_get_prom_off(0));
+
+  Serial.print("Sens: ");
+  Serial.println(sens);
+
+  laser_on(0);
+  delay(500);
+  music_start();
 }
 
 
 void loop() {
- 
+  //tone(11, 2000, 500);
+  int v1 = photo_get_measure(0);
+  if (v1 < sens) {
+    Serial.print("Cortado: "); 
+    Serial.println(v1);
+  }
 }
