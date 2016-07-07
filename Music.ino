@@ -1,228 +1,138 @@
-int spkPin = 9;
+int spkPin = 11;
+int sirPin = 30;
 
-int notes[] = {
-31    ,4032,
-33    ,3788,
-35    ,3571,
-37    ,3378,
-39    ,3205,
-41    ,3049,
-44    ,2841,
-46    ,2717,
-49    ,2551,
-52    ,2404,
-55    ,2273,
-58    ,2155,
-62    ,2016,
-65    ,1923,
-69    ,1812,
-73    ,1712,
-78    ,1603,
-82    ,1524,
-87    ,1437,
-93    ,1344,
-98    ,1276,
-104   ,1202,
-110   ,1136,
-117   ,1068,
-123   ,1016,
-131   ,954,
-139   ,899,
-147   ,850,
-156   ,801,
-165   ,758,
-175   ,714,
-185   ,676,
-196   ,638,
-208   ,601,
-220   ,568,
-233   ,536,
-247   ,506,
-262   ,477,
-277   ,451,
-294   ,425,
-311   ,402,
-330   ,379,
-349   ,358,
-370   ,338,
-392   ,319,
-415   ,301,
-440   ,284,
-466   ,268,
-494   ,253,
-523   ,239,
-554   ,226,
-587   ,213,
-622   ,201,
-659   ,190,
-698   ,179,
-740   ,169,
-784   ,159,
-831   ,150,
-880   ,142,
-932   ,134,
-988   ,127,
-1047  ,119,
-1109  ,113,
-1175  ,106,
-1245  ,100,
-1319  ,95,
-1397  ,89,
-1480  ,84,
-1568  ,80,
-1661  ,75,
-1760  ,71,
-1865  ,67,
-1976  ,63,
-2093  ,60,
-2217  ,56,
-2349  ,53,
-2489  ,50,
-2637  ,47,
-2794  ,45,
-2960  ,42,
-3136  ,40,
-3322  ,38,
-3520  ,36,
-3729  ,34,
-3951  ,32,
-4186  ,30,
-4435  ,28,
-4699  ,27,
-4978  ,25 };
+extern const int laser_count;
+extern const int photo_count;
 
+#define NOTE_B0  31
+#define NOTE_C1  33
+#define NOTE_CS1 35
+#define NOTE_D1  37
+#define NOTE_DS1 39
+#define NOTE_E1  41
+#define NOTE_F1  44
+#define NOTE_FS1 46
+#define NOTE_G1  49
+#define NOTE_GS1 52
+#define NOTE_A1  55
+#define NOTE_AS1 58
+#define NOTE_B1  62
+#define NOTE_C2  65
+#define NOTE_CS2 69
+#define NOTE_D2  73
+#define NOTE_DS2 78
+#define NOTE_E2  82
+#define NOTE_F2  87
+#define NOTE_FS2 93
+#define NOTE_G2  98
+#define NOTE_GS2 104
+#define NOTE_A2  110
+#define NOTE_AS2 117
+#define NOTE_B2  123
+#define NOTE_C3  131
+#define NOTE_CS3 139
+#define NOTE_D3  147
+#define NOTE_DS3 156
+#define NOTE_E3  165
+#define NOTE_F3  175
+#define NOTE_FS3 185
+#define NOTE_G3  196
+#define NOTE_GS3 208
+#define NOTE_A3  220
+#define NOTE_AS3 233
+#define NOTE_B3  247
+#define NOTE_C4  262
+#define NOTE_CS4 277
+#define NOTE_D4  294
+#define NOTE_DS4 311
+#define NOTE_E4  330
+#define NOTE_F4  349
+#define NOTE_FS4 370
+#define NOTE_G4  392
+#define NOTE_GS4 415
+#define NOTE_A4  440
+#define NOTE_AS4 466
+#define NOTE_B4  494
+#define NOTE_C5  523
+#define NOTE_CS5 554
+#define NOTE_D5  587
+#define NOTE_DS5 622
+#define NOTE_E5  659
+#define NOTE_F5  698
+#define NOTE_FS5 740
+#define NOTE_G5  784
+#define NOTE_GS5 831
+#define NOTE_A5  880
+#define NOTE_AS5 932
+#define NOTE_B5  988
+#define NOTE_C6  1047
+#define NOTE_CS6 1109
+#define NOTE_D6  1175
+#define NOTE_DS6 1245
+#define NOTE_E6  1319
+#define NOTE_F6  1397
+#define NOTE_FS6 1480
+#define NOTE_G6  1568
+#define NOTE_GS6 1661
+#define NOTE_A6  1760
+#define NOTE_AS6 1865
+#define NOTE_B6  1976
+#define NOTE_C7  2093
+#define NOTE_CS7 2217
+#define NOTE_D7  2349
+#define NOTE_DS7 2489
+#define NOTE_E7  2637
+#define NOTE_F7  2794
+#define NOTE_FS7 2960
+#define NOTE_G7  3136
+#define NOTE_GS7 3322
+#define NOTE_A7  3520
+#define NOTE_AS7 3729
+#define NOTE_B7  3951
+#define NOTE_C8  4186
+#define NOTE_CS8 4435
+#define NOTE_D8  4699
+#define NOTE_DS8 4978
 
-
-#define NOTE_B0  0
-#define NOTE_C1  1
-#define NOTE_CS1 2
-#define NOTE_D1  3
-#define NOTE_DS1 4
-#define NOTE_E1  5
-#define NOTE_F1  6
-#define NOTE_FS1 7
-#define NOTE_G1  8
-#define NOTE_GS1 9
-#define NOTE_A1  10
-#define NOTE_AS1 11
-#define NOTE_B1  12
-#define NOTE_C2  13
-#define NOTE_CS2 14
-#define NOTE_D2  15
-#define NOTE_DS2 16
-#define NOTE_E2  17
-#define NOTE_F2  18
-#define NOTE_FS2 19
-#define NOTE_G2  20
-#define NOTE_GS2 21
-#define NOTE_A2  22
-#define NOTE_AS2 23
-#define NOTE_B2  24
-#define NOTE_C3  25
-#define NOTE_CS3 26
-#define NOTE_D3  27
-#define NOTE_DS3 28
-#define NOTE_E3  29
-#define NOTE_F3  30
-#define NOTE_FS3 31
-#define NOTE_G3  32
-#define NOTE_GS3 33
-#define NOTE_A3  34
-#define NOTE_AS3 35
-#define NOTE_B3  36
-#define NOTE_C4  37
-#define NOTE_CS4 38
-#define NOTE_D4  39
-#define NOTE_DS4 40
-#define NOTE_E4  41
-#define NOTE_F4  42
-#define NOTE_FS4 43
-#define NOTE_G4  44
-#define NOTE_GS4 45
-#define NOTE_A4  46
-#define NOTE_AS4 47
-#define NOTE_B4  48
-#define NOTE_C5  49
-#define NOTE_CS5 50
-#define NOTE_D5  51
-#define NOTE_DS5 52
-#define NOTE_E5  53
-#define NOTE_F5  54
-#define NOTE_FS5 55
-#define NOTE_G5  56
-#define NOTE_GS5 57
-#define NOTE_A5  58
-#define NOTE_AS5 59
-#define NOTE_B5  60
-#define NOTE_C6  61
-#define NOTE_CS6 62
-#define NOTE_D6  63
-#define NOTE_DS6 64
-#define NOTE_E6  65
-#define NOTE_F6  66
-#define NOTE_FS6 67
-#define NOTE_G6  68
-#define NOTE_GS6 69
-#define NOTE_A6  70
-#define NOTE_AS6 71
-#define NOTE_B6  72
-#define NOTE_C7  73
-#define NOTE_CS7 74
-#define NOTE_D7  75
-#define NOTE_DS7 76
-#define NOTE_E7  77
-#define NOTE_F7  78
-#define NOTE_FS7 79
-#define NOTE_G7  80
-#define NOTE_GS7 81
-#define NOTE_A7  82
-#define NOTE_AS7 83
-#define NOTE_B7  84
-#define NOTE_C8  85
-#define NOTE_CS8 86
-#define NOTE_D8  87
-#define NOTE_DS8 88
+int melody3[] = {
+  NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5  
+};
 
 int melody2[] = {
-  NOTE_E7, NOTE_C7, NOTE_G7, NOTE_G6, NOTE_E6, NOTE_A6, NOTE_B6,
-  NOTE_AS6, NOTE_A7, NOTE_F7, NOTE_D7, NOTE_B6, 0,
-  NOTE_E7, NOTE_C7, NOTE_G7, NOTE_G6, NOTE_E6, NOTE_A6, NOTE_B6,
+  0, NOTE_CS7, 0, 0, NOTE_E6, NOTE_A6, NOTE_B6,
   NOTE_AS6, NOTE_A7, NOTE_F7, NOTE_D7, NOTE_B6, 0
 };
 
+int tempo2[] = { 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12  };
+
 int melody[] = {
   NOTE_E7, NOTE_E7, 0, NOTE_E7,
-  0, NOTE_C7, NOTE_E7, 0,
+  0, NOTE_CS7, NOTE_E7, 0,
   NOTE_G7, 0, 0,  0,
   NOTE_G6, 0, 0, 0,
 
-   NOTE_C7, 0, 0, NOTE_G6,
+   NOTE_CS7, 0, 0, NOTE_G6,
   0, 0, NOTE_E6, 0,
   0, NOTE_A6, 0, NOTE_B6,
   0, NOTE_AS6, NOTE_A6, 0,
 
   NOTE_G6, NOTE_E7, NOTE_G7,
   NOTE_A7, 0, NOTE_F7, NOTE_G7,
-  0, NOTE_E7, 0, NOTE_C7,
+  0, NOTE_E7, 0, NOTE_CS7,
   NOTE_D7, NOTE_B6, 0, 0,
  
-  NOTE_C7, 0, 0, NOTE_G6,
+  NOTE_CS7, 0, 0, NOTE_G6,
   0, 0, NOTE_E6, 0,
   0, NOTE_A6, 0, NOTE_B6,
   0, NOTE_AS6, NOTE_A6, 0,
  
   NOTE_G6, NOTE_E7, NOTE_G7,
   NOTE_A7, 0, NOTE_F7, NOTE_G7,
-  0, NOTE_E7, 0, NOTE_C7,
+  0, NOTE_E7, 0, NOTE_CS7,
   NOTE_D7, NOTE_B6, 0, 0
 };
 
 #define max_notes (sizeof(melody) / sizeof(melody[0]))
-
-int tempo2[] = {
-  12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-   9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9  
-};
 
 int tempo[] = {
   12, 12, 12, 12,
@@ -253,14 +163,11 @@ int tempo[] = {
 
 
 int note_index = -1;
-int new_note = true;
-int time_cut = 0;
-int space_cut;
-int time_count;
-int space_count;
+bool new_note = true;
 bool up_wave = false;
 bool spacing = false;
-int ns, ne;
+int play_ticks;
+int space_ticks;
 int music_playing = true;
 
 /*
@@ -268,74 +175,60 @@ int music_playing = true;
  * Se repite times veces segun el tempo.
  */
 
-long mm = -1;
+long d = 0;
+
 ISR(TIMER1_COMPA_vect) {          // timer compare interrupt service routine
 
   if (!music_playing) return;
 
   if (new_note) {
-    long d = 0;
-    if (mm == -1) mm = millis();
-    else {
-      d = millis() - mm;
-      mm = millis();
-    }
+    noInterrupts();
     note_index++;
-    /*
+    if (note_index >= max_notes) note_index = 0;
+    new_note = false;
+
+    // Frecuencia del clock. Recordar que 2000000 (2M) es 1 seg.
+    int f = melody[note_index] * 2; // Calculo el doble por el on - off, de a 1/2 ciclo
+    if (!f) f = 200; // Lo filtro luego
+    int cnt = (int)(2000000l / f);
+    OCR1A = cnt;
+
+    play_ticks =  f  / (2 * tempo[note_index]);
+    space_ticks = f / 5; // 0.3 segs
+    spacing = false;
+    up_wave = false;
+    interrupts();
+
+/*
     Serial.print(note_index);
     Serial.print(" - ");
     Serial.print(melody[note_index]);
     Serial.print(" - ");
-    Serial.println(d);
-    */
-    if (note_index >= max_notes) note_index = 0;
-    new_note = false;
-    time_cut = notes[melody[note_index] * 2] / tempo[note_index];
-    time_cut = (time_cut * 3) / 2; //time_cut % 2;
-    space_cut = time_cut / 3;
-
-    /*
-    Serial.print("Tempo: ");
-    Serial.println(notes[melody[note_index] * 2  + 1]);
-    Serial.print("TimeCut: ");
-    Serial.println(time_cut);
-    */
-
-    spacing = false;
-    time_count = 0;
-    up_wave = false;
-
-    /*
-    digitalWrite(spkPin, HIGH);
-    digitalWrite(13, HIGH);
-    */
-
-    OCR1A = notes[melody[note_index] * 2 + 1] * 2; // freq    
-
-    /*
-    Serial.print("Freq: ");
-    Serial.println(OCR1A);
-    */
-
+    Serial.print(f);
+    Serial.print(" - ");
+    Serial.print(cnt);
+    Serial.print(" - ");
+    Serial.print(play_ticks);
+    Serial.print(" - ");
+    Serial.println(millis() - d);
+    d = millis();
+*/
     if (melody[note_index] != 0)
       digitalWrite(13, HIGH);
-    ns = millis();
   }
 
   if (spacing) {
-    if(++space_count >= space_cut) {
+    if(space_ticks-- <= 0) {
       spacing = false;
       new_note = true;
     }
     return;
   }
 
-  if (time_count++ >= time_cut) {
+  if (play_ticks-- <= 0) {
     digitalWrite(spkPin, LOW);
     digitalWrite(13, LOW);
     spacing = true;
-    space_count = 0;
-    //Serial.println(millis() - ns);
     return;
   }
 
@@ -365,9 +258,8 @@ void music_setup(int sp) {
   TCCR1B = 0;
   TCNT1 = 0;
 
-  //OCR1A = 15625; // 1 seg ?? ponele
-  OCR1A = 100; // TICKS_BASE;   // 0.1 segs
-  TCCR1B |= ((1<<CS11) | (1<<CS10)); // 1024 prescaler
+  OCR1A = 100; 
+  TCCR1B |= (1<<CS11); // 8 prescaler
   TCCR1B |= (1<<WGM12);              // CTC Mode 1
 
   TIMSK1 |= (1 << OCIE1A);
@@ -381,18 +273,27 @@ void music_setup(int sp) {
 
 int sens = 10;
 
+inline void sir_on() {
+  digitalWrite(sirPin, LOW);
+}
+
+inline void sir_off() {
+  digitalWrite(sirPin, HIGH);
+}
 
 void setup() {
   Serial.begin(115200);
 
   pinMode(13, OUTPUT);
+  pinMode(sirPin, OUTPUT);
+  sir_off();
 
   photo_setup();
   photo_adjust();
 
-  music_setup(9);
+  music_setup(spkPin);
 
-  sens = int((long)photo_get_prom_on(0) * 95l / 100l);
+  sens = 20;
 
   Serial.print("On: ");
   Serial.println(photo_get_prom_on(0));
@@ -403,17 +304,31 @@ void setup() {
   Serial.print("Sens: ");
   Serial.println(sens);
 
-  laser_on(0);
-  delay(500);
+  for(int ii=0; ii<laser_count; ii++)
+    laser_on(ii);
+
   music_start();
 }
 
 
 void loop() {
   //tone(11, 2000, 500);
-  int v1 = photo_get_measure(0);
-  if (v1 < sens) {
-    Serial.print("Cortado: "); 
+  for(int ii=0; ii<photo_count; ii++) {
+    int v1 = photo_get_measure(ii);
+    /*
+    Serial.print(ii);
+    Serial.print(": ");
     Serial.println(v1);
+    */
+    if (v1 < photo_get_prom_on(ii) - sens) {
+      Serial.print("Cortado: "); 
+      Serial.println(ii);
+      sir_on();
+      delay(300);
+      sir_off();
+      delay(1000);
+      return;
+    }
   }
+  //delay(500);
 }

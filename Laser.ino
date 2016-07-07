@@ -1,10 +1,10 @@
-byte lasers[] = {8};
-bool laser_status[] = {false};
+byte lasers[] = {22,24,26,28};
+bool laser_status[] = {false, false, false, false};
 
-#define laser_count (sizeof(lasers)/sizeof(lasers[0]))
+const int laser_count (sizeof(lasers)/sizeof(lasers[0]));
 
-byte photos[] = {A5};
-#define photo_count (sizeof(photos)/sizeof(photos[0]))
+byte photos[] = {A0, A1, A2, A3};
+const int photo_count (sizeof(photos)/sizeof(photos[0]));
 
 #define SAMPLES 10
 
